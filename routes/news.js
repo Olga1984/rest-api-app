@@ -1,48 +1,111 @@
 const express = require('express');
 const router = express.Router();
 
+const myArray = [
+    {
+        id: '1',
+        news: {
+            "news": "first",
+            "title": "zion resident"
+        }
+    },
+    {
+        id: '2',
+        news: {
+            "news": "first",
+            "title": "resident"
+        }
+    },
+    {
+        id: '3',
+        news: {
+            "news": "first",
+            "title": "zion"
+        }
+    },
+    {
+        id: '4',
+        news: {
+            "news": "first",
+            "title": "zion"
+        }
+    },
+    {
+        id: '5',
+        news: {
+            "news": "first",
+            "title": "zion"
+        }
+    }, {
+        id: '6',
+        news: {
+            "news": "first",
+            "title": "zion"
+        }
+    },
+];
+
 router.get('/news', function (req, res, next) {
-    res.send({type: 'Get'});
+    res.send(myArray);
 });
 
 router.get('/news/:id', function (req, res, next) {
-    if (req.params.id === '0'){next('route');}
-    else { next();}
+    if (req.params.id === '0') {
+        next('route');
+    } else {
+        next();
+    }
 }, function (req, res, next) {
-    res.send('news_' + req.params.id);
+    const id = req.params.id;
+    const newsItem = myArray.find(item => item.id === id);
+    //console.log(newsItem);
+    res.send(newsItem);
 });
 
-// {
-//     "news": "first",
-//     "title": "zion resident"
-// }
 
 router.post('/news', function (req, res, next) {
-   // console.log(req.body);
-    res.send({
-        type: 'POST',
-        news: req.body.news,
-        title: req.body.title
-    });
+    const postItem = {
+        id: req.body.id,
+        news: req.body.news
+    };
+    const postArrayLength = myArray.push(postItem);
+    console.log(postArrayLength);
+    res.send(myArray);
 });
 
+//  req.body
+// {
+//     "id": "8",
+//     "news": {
+//     "news": "879",
+//         "title": "1789"
+// }
+// }
 router.put('/news/:id', function (req, res, next) {
-    if (req.params.id === '0'){next('route');}
-else { next();}
+    if (req.params.id === '0') {
+        next('route');
+    } else {
+        next();
+    }
 }, function (req, res, next) {
-        res.send({
-            type: 'PUT',
-            id: req.params.id,
-            news: req.body.news,
-            title: req.body.title
-        });
+    const updatedItem = {
+        id: req.body.id,
+        news: req.body.news
+    };
+    myArray[req.params.id - 1] = updatedItem;
+    console.log(myArray);
+    res.send(myArray);
 });
 
 router.delete('/news/:id', function (req, res, next) {
-    if (req.params.id === '0'){next('route');}
-    else { next();}
+    if (req.params.id === '0') {
+        next('route');
+    } else {
+        next();
+    }
 }, function (req, res, next) {
-    res.send('deleted_news_' + req.params.id);
+    const updatedArray = myArray.filter((item) => item.id !== req.params.id);
+    res.send(updatedArray);
 
 });
 
